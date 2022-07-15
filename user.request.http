@@ -1,0 +1,36 @@
+##### User Login
+POST http://localhost:3200/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email":"himanshu.mahara@publicissapient.com"
+}
+
+
+##### User Verfiy hash
+POST http://localhost:3200/user/verify/hash HTTP/1.1
+Content-Type: application/json
+
+{
+    "hash":"lskjflkdsjfkldsjfklsdjfklsjf"
+}
+
+##### User Verfiy OTP
+POST http://localhost:3200/user/verify/otp HTTP/1.1
+Content-Type: application/json
+
+{
+    "hash":"lskjflkdsjfkldsjfklsdjfklsjf",
+    "otp":"1234"
+}
+
+##### User Create Profile
+POST http://localhost:3200/user/create HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer JWT_TOKEN
+
+{
+    "oracleID":"123322",
+    "careerStage":"Senior Associate",
+    "primaryCapability":"XT"
+}

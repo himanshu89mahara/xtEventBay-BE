@@ -1,9 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 
+const validateEmail = (email) => {
+    return true;
+}
+
 const userSchema =  new Schema({
     email:{
         type:String,
-        required: true
+        required: [validateEmail,'Email Address is required']
     },
     otp:{
         type:String,
@@ -27,5 +31,9 @@ const userSchema =  new Schema({
     }
 });
 
-export default UserModel = mongoose.model('User',userSchema);
-
+const UserModel = mongoose.model('User',userSchema);
+export const generateObjectId = () => {
+    const ObjectId = new mongoose.Types.ObjectId();
+    return ObjectId.toString();
+};
+ export default UserModel;

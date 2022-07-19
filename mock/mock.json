@@ -1,0 +1,90 @@
+{
+  "employees": [
+    {
+      "name": "Himanshu Mahara",
+      "email": "himanshu.mahara@publicissapient.com",
+      "oracleId": 16338,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-Angular"
+    },
+    {
+      "name": "Rohit Singh",
+      "email": "rohit.singh1@publicissapient.com",
+      "oracleId": 169152,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-Angular"
+    },
+    {
+      "name": "Sailesh Patra",
+      "email": "sailesh.patra@publicissapient.com",
+      "oracleId": 172043,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-Angular"
+    },
+    {
+      "name": "Rohit Wadhwani",
+      "email": "rohit.wadhwani@publicissapient.com",
+      "oracleId": 171566,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-Core"
+    },
+    {
+      "name": "Sourabh Mahajan",
+      "email": "sourabh.mahajan@publicissapient.com",
+      "oracleId": 173089,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-Angular"
+    },
+    {
+      "name": "Rohit Manora",
+      "email": "rohit.manora@publicissapient.com",
+      "oracleId": 165928,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-Angular"
+    },
+    {
+      "name": "Himanshu Dummy1",
+      "email": "himanshu.dummy@publicissapient.com",
+      "oracleId": 165929,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-React"
+    },
+    {
+      "name": "Himanshu Dummy2",
+      "email": "himanshu.dummy2@publicissapient.com",
+      "oracleId": 165930,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-Node"
+    },
+    {
+      "name": "Himanshu Dummy3",
+      "email": "himanshu.dummy3@publicissapient.com",
+      "oracleId": 165930,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-Vue"
+    },
+    {
+      "name": "Himanshu Dummy4",
+      "email": "himanshu.dummy4@publicissapient.com",
+      "oracleId": 165931,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-Core"
+    },
+    {
+      "id": 0.977917949132076,
+      "name": "Mock User",
+      "email": "himanshu.mahara1@publicissapient.com",
+      "oracleId": 542392,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-Core"
+    },
+    {
+      "id": 0.8252281955994838,
+      "name": "Mock User",
+      "email": "himanshu.mahara2@publicissapient.com",
+      "oracleId": 158157,
+      "careerStage": "Senior Associate",
+      "primaryCapability": "XT-Core"
+    }
+  ]
+}

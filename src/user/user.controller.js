@@ -1,4 +1,5 @@
-import jsonwebtoken  from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken";
+import { findEmployee } from "../utils/employee";
 import { generateHash, hashMatch } from "../utils/hash";
 import { generate } from "../utils/keyCode";
 import logger from "../utils/logger";
@@ -10,36 +11,47 @@ const jwt = jsonwebtoken;
 export const userLogin = async (req, res) => {
   const email = req.body.email;
   try {
-    const otp = generate();
-    const hashOTP = await generateHash(otp);
-    const verifyKey = generateObjectId();
-    const verifyURL = `${req.protocol}://${req.headers.host}/user/verify/${verifyKey}`;
-    await UserModel.updateOne(
-      { email: req.body.email },
-      { email: req.body.email, otp: hashOTP, verifyKey },
-      { upsert: true, runValidators: true }
-    );
+    const user = await findEmployee(email);
+    if (user) {
+      const otp = generate();
+      const hashOTP = await generateHash(otp);
+      const verifyKey = generateObjectId();
+      const verifyURL = `${req.protocol}://${req.headers.host}/user/verify/${verifyKey}`;
 
-    await sendMail({
-      from: "himanshumahara.ps@gmail.com", // sender address
-      to: email, // list of receivers
-      subject: "XtEventBay - Verify Email", // Subject line
-      html: `
+      await UserModel.updateOne(
+        { email: req.body.email },
+        { email: req.body.email, otp: hashOTP, verifyKey },
+        { upsert: true, runValidators: true }
+      );
+      const html = `
         <p>OTP: <b> ${otp}</b> </p>
-        <p>URL: </p><a href="${verifyURL}">Click Here</a>
-      
-      `,
-    });
-    res.json({
-      status: true,
-      verifyURL,
-      email,
-    });
+       <p>URL: </p><a href="${verifyURL}">Click Here</a>
+      `;
+
+      await sendMail(
+        email,
+        "XtEventBay - Verify Email",
+        html,
+        "himanshumahara.ps@gmail.com"
+      );
+      res.json({
+        status: true,
+        verifyURL,
+        email,
+      });
+    } else {
+      res.json({
+        status: false,
+        error: {
+          email: "Email is not found",
+        },
+      });
+    }
   } catch (err) {
-    logger.log({ level: "error", message: err.stack });
+    logger.log({ level: "error", message: err.message });
     res.json({
       status: false,
-      error: "Something went wrong.",
+      error: err.message || "Something went wrong.",
     });
   }
 };
@@ -71,11 +83,15 @@ export const userVerifyOTP = async (req, res) => {
     try {
       const otpMatched = await hashMatch(otp, user.otp);
       if (otpMatched) {
-        const token = jwt.sign({ user }, process.env.JWT_SECRET_KEY);
+        const userData = await findEmployee(user.email);
+        const token = jwt.sign({ user:userData,expiredOn: new Date(new Date().setDate(new Date().getDate() + 2)) }, process.env.JWT_SECRET_KEY);
+        user.otp = '';
+        user.verifyKey='';
+        user.save();
         res.json({
           status: true,
           message: "OTP matched",
-          token
+          token,
         });
       } else {
         res.json({
@@ -84,7 +100,7 @@ export const userVerifyOTP = async (req, res) => {
         });
       }
     } catch (err) {
-      logger.log('error',err.stack);
+      logger.log("error", err.stack);
       res.json({
         status: false,
         message: "Something went wrong. Try again",
@@ -98,17 +114,17 @@ export const userVerifyOTP = async (req, res) => {
   }
 };
 
-export const userAuth = async (req,res) =>{
-  const bearerHeader = req.headers['authorization'] || '';
+export const userAuth = async (req, res) => {
+  const bearerHeader = req.headers["authorization"] || "";
   const bearerArray = bearerHeader.split(" ");
-  const token = bearerArray[1]!==undefined?bearerArray[1]:"";
-  if(!token){
+  const token = bearerArray[1] !== undefined ? bearerArray[1] : "";
+  if (!token) {
     res.json({
       status: false,
       errorCode: 401,
-      errMessage: "Authorizatin failed."
+      errMessage: "Authorizatin failed.",
     });
-   return;
+    return;
   }
   req.token = token;
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, data) => {
@@ -120,16 +136,30 @@ export const userAuth = async (req,res) =>{
         errMessage: "Authorizatin failed.",
       });
     } else {
-      req.user = data.user;
-      delete req.user.otp;
-      delete req.user.verifyKey;
-      res.json({
-        status: true,
-        user: req.user
-      });
+      const tokenExpiryDate = new Date(data.expiredOn);
+      const currentDate = new Date();
+      if(currentDate > tokenExpiryDate){
+        res.json({
+          status: false,
+          errorCode: 402,
+          errMessage: "Authorization failed",
+        });
+        
+      }else{
+        req.user = data.user;
+        delete req.user.otp;
+        delete req.user.verifyKey;
+        res.json({
+          status: true,
+          user: req.user,
+        });
+      
+
+      }
+      
     }
- 
-  //res.send("User Auth");
+
+    //res.send("User Auth");
   });
 };
 export const userCreate = (req, res) => {

@@ -12,7 +12,7 @@ POST http://localhost:3201/user/verify/hash HTTP/1.1
 Content-Type: application/json
 
 {
-    "hash":"62d6659e8f366000ee0227c0"
+    "hash":"62da43e177c575eabdf6b2e6"
 }
 
 ##### User Verfiy OTP
@@ -20,8 +20,8 @@ POST http://localhost:3201/user/verify/otp HTTP/1.1
 Content-Type: application/json
 
 {
-    "hash":"62d6659e8f366000ee0227c0",
-    "otp":"328937"
+    "hash":"62da43e177c575eabdf6b2e6",
+    "otp":"631993"
 }
 
 ##### User Verfiy OTP

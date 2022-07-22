@@ -27,8 +27,25 @@ export const checkAuth = async (req, res, next) => {
         errMessage: "Authorizatin failed.",
       });
     } else {
-      req.user = data.user;
-      next();
+      const tokenExpiryDate = new Date(data.expiredOn);
+      const currentDate = new Date();
+      if(currentDate > tokenExpiryDate){
+        res.json({
+          status: false,
+          errorCode: 402,
+          errMessage: "Authorization failed",
+        });
+        
+      }else{
+        req.user = data.user;
+        delete req.user.otp;
+        delete req.user.verifyKey;
+        next();
+      
+
+      }
+      
+      
     }
   });
 };

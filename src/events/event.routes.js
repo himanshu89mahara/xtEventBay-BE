@@ -1,6 +1,8 @@
 import express from "express";
+import { checkAuth } from "../user/user.middleware";
 import { addEvent, addInterestedUserInEvent, approveEvent, deleteEvent, getEvent, listEvent, statusChangeEvent, updateEvent } from "./event.controller";
 const eventRoutes = express.Router();
+eventRoutes.use(checkAuth);
 
 eventRoutes.route("/").get(listEvent).post(addEvent);
 eventRoutes.route("/:eventID").get(getEvent).put(updateEvent).delete(deleteEvent);

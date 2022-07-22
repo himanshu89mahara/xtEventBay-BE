@@ -1,78 +1,156 @@
 import mongoose, { Schema } from "mongoose";
+import { dateIsLessThan } from "../utils/mongoose";
 const userSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Name is required"],
   },
   email: {
     type: String,
-    required: true,
+    required: [true, "Email is required"],
   },
   oracleId: {
     type: String,
-    required: true,
+    required: [true, "Oracle Id is required"],
   },
   careerStage: {
     type: String,
-    required: true,
+    required: [true, "Career Stage is required"],
+  },
+  photo: {
+    type: String,
+    required: false,
   },
 });
 
-const eventSchema = new Schema({
+export const eventSchema = new Schema({
   title: {
     type: String,
-    required: true,
+    required: [true, "Title is required"],
   },
   startDate: {
     type: Date,
-    required: true,
+    required: [true, "Start Date is required"],
   },
   isRecurring: {
     type: Boolean,
-    required: true,
+    default: false,
   },
   frequency: {
     type: String,
-    enum: ["Weekly", "Fortnightly", "Monthly", "Quaterly"],
+    enum: {
+      values: ["Weekly", "Fortnightly", "Monthly", "Quaterly"],
+      message: "{VALUE} is not supported",
+    },
     required: true,
   },
   endDate: {
     type: Date,
-    required: true,
+    required: [true, "End Date is required."],
   },
   isNominationAllow: {
     type: Boolean,
     required: true,
+    default: true,
   },
   nominationStartDate: {
     type: Date,
-    required: true,
   },
   nominationEndDate: {
     type: Date,
-    required: true,
   },
   presenters: [userSchema],
   image: String,
   youtubeURL: String,
   pid: Number,
-  description: Text,
-  teamMembers: [userSchema],
+  description: String,
+  teamMembers: {
+    type: [userSchema],
+    validate: {
+      validator: (v) => {
+        if (v && v.length) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      message: "Atleast one Team member is required.1",
+    },
+  },
+  createdBy: {
+    type: userSchema,
+    validate: {
+      validator: (v) => {
+        if (typeof v == "object" && Object.keys(v).length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      message: "Creator is required",
+    },
+  },
   isApproved: {
     type: Boolean,
-    required: true,
+    required: [false, "Approved Status is reqiuired"],
+    default:false
   },
-  interested:[userSchema],
+  interested: [userSchema],
   status: {
     type: String,
-    enum: ["Cancelled", "Active", "Rejected"],
-    required: true,
+    enum: {
+      values: ["Cancelled", "Active", "Rejected"],
+      message: "{VALUE} is not supported",
+    },
+    required: [true, "Status is required"],
+    default:"Active"
   },
-  statusComment: {
+  comment: {
     type: String,
-    required: true,
+    required: false,
     length: 300,
-  }
+  },
 });
 
-export default EventModel = mongoose.model("Event",eventSchema);
+eventSchema.pre(['validate', 'update','updateOne'], function (next) {
+  if (this.endDate) {
+    eventSchema.path("startDate").validators.pop();
+    eventSchema.path("startDate").validators.push({
+      validator: dateIsLessThan(this.endDate),
+      message: "Start Date should be less than end Date",
+    });
+  }
+
+  if (this.isNominationAllow) {
+    eventSchema.path("nominationStartDate").validators = [
+      {
+        validator: (v) => {
+          if (!v) {
+            return false;
+          } else {
+            return true;
+          }
+        },
+        message: "Nomination Start date should be required",
+      },
+
+      {
+        validator: dateIsLessThan(this.nominationEndDate),
+        message: "Start Date should be less than end Date",
+      },
+    ];
+  }
+  
+  eventSchema.path("comment").validators.pop();
+  eventSchema.path("comment").validate((v) => {
+    if (this.status !== "Active") {
+      return v && v.trim().length > 0;
+    } else {
+      return true;
+    }
+  }, "Comment is required");
+  next();
+});
+
+const EventModel = mongoose.model("Event", eventSchema);
+export default EventModel;

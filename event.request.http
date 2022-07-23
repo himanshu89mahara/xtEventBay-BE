@@ -140,3 +140,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Im5hbWUiO
 GET http://localhost:3201/event/62da87b7c82934e9aa55c0da HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Im5hbWUiOiJIaW1hbnNodSBNYWhhcmEiLCJlbWFpbCI6ImhpbWFuc2h1Lm1haGFyYUBwdWJsaWNpc3NhcGllbnQuY29tIiwib3JhY2xlSWQiOjE2MzM4LCJjYXJlZXJTdGFnZSI6IlNlbmlvciBBc3NvY2lhdGUiLCJwcmltYXJ5Q2FwYWJpbGl0eSI6IlhULUFuZ3VsYXIifSwiZXhwaXJlZE9uIjoiMjAyMi0wNy0yNFQwNjozMDoyNS4yMjlaIiwiaWF0IjoxNjU4NDcxNDI1fQ.j25kDCCRveDB33IKWO4XpCjblN0lzYC_WMxpl0eEWKM
+
+
+##### POST Event Add Interested
+POST http://localhost:3201/event/62da7a8aeba921d7c18d6a89/interested-user HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Im5hbWUiOiJIaW1hbnNodSBNYWhhcmEiLCJlbWFpbCI6ImhpbWFuc2h1Lm1haGFyYUBwdWJsaWNpc3NhcGllbnQuY29tIiwib3JhY2xlSWQiOjE2MzM4LCJjYXJlZXJTdGFnZSI6IlNlbmlvciBBc3NvY2lhdGUiLCJwcmltYXJ5Q2FwYWJpbGl0eSI6IlhULUFuZ3VsYXIifSwiZXhwaXJlZE9uIjoiMjAyMi0wNy0yNFQwNjozMDoyNS4yMjlaIiwiaWF0IjoxNjU4NDcxNDI1fQ.j25kDCCRveDB33IKWO4XpCjblN0lzYC_WMxpl0eEWKM
+
+{
+    "name":"Himanshu Mahara",
+    "email":"himanshu.mahara1@publicissapient.com",
+    "oracleId":"168338",
+    "careerStage":"Senior Associate"
+}
+
+##### DELETE Event Add Interested
+DELETE http://localhost:3201/event/62da7a8aeba921d7c18d6a89/interested-user/62dbd5cc34349f65bd5926af HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Im5hbWUiOiJIaW1hbnNodSBNYWhhcmEiLCJlbWFpbCI6ImhpbWFuc2h1Lm1haGFyYUBwdWJsaWNpc3NhcGllbnQuY29tIiwib3JhY2xlSWQiOjE2MzM4LCJjYXJlZXJTdGFnZSI6IlNlbmlvciBBc3NvY2lhdGUiLCJwcmltYXJ5Q2FwYWJpbGl0eSI6IlhULUFuZ3VsYXIifSwiZXhwaXJlZE9uIjoiMjAyMi0wNy0yNFQwNjozMDoyNS4yMjlaIiwiaWF0IjoxNjU4NDcxNDI1fQ.j25kDCCRveDB33IKWO4XpCjblN0lzYC_WMxpl0eEWKM
+
+{
+    "name":"Himanshu Mahara",
+    "email":"himanshu.mahara1@publicissapient.com",
+    "oracleId":"168338",
+    "careerStage":"Senior Associate"
+}

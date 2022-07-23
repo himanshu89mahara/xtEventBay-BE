@@ -140,6 +140,7 @@ eventSchema.pre(['validate', 'update','updateOne'], function (next) {
       },
     ];
   }
+ 
   
   eventSchema.path("comment").validators.pop();
   eventSchema.path("comment").validate((v) => {

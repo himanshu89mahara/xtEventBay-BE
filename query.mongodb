@@ -1,0 +1,47 @@
+use('xtEventBay');
+
+//db.events.find();
+
+//db.events.find({"presenters._id":ObjectId("62da7a8aeba921d7c18d6a8a")});
+
+db.events.find({"_id":ObjectId("62da7a8aeba921d7c18d6a89")},{interested:1});
+
+//find array element
+db.events.find({"interested.oracleId":"168338"},{interested:1});
+
+//Add array element
+db.events.updateOne({"_id":ObjectId("62da7a8aeba921d7c18d6a89")},{
+    $push: {
+        "interested":{
+             "name":"Rohit Singh",
+             "email":"rohit.singh@publicissapient.com",
+             "oracleId":"168339",
+             "careerStage":"Senior Associate"
+        }
+    }
+
+});
+
+//Remove array Elements
+db.events.updateOne({"_id":ObjectId("62da7a8aeba921d7c18d6a89")},{
+    $pull: {
+        "interested":{
+            "oracleId":"168338",
+        }
+    }
+});
+
+//find array element
+db.events.aggregate([
+    {
+        
+        $addFields: {
+          totalInterested: {$size:"$interested"}
+        }
+    },
+    {
+        $match: {
+        _id:ObjectId("62da7a8aeba921d7c18d6a89")
+        }
+    }
+]);
